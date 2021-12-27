@@ -1,3 +1,8 @@
+<script context="module">
+  import { io } from "socket.io-client";
+  const socket = io("http://localhost:3000");
+</script>
+
 <main>
   <img
     class="fixed left-0 bottom-0"
