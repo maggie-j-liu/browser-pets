@@ -1,6 +1,6 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-var app = (function () {
+var popup = (function () {
     'use strict';
 
     function noop() { }
@@ -345,19 +345,18 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			h1 = element("h1");
-    			h1.textContent = "Hello fdfds!";
+    			h1.textContent = "Hello world!";
     			t1 = space();
     			p = element("p");
     			t2 = text("Visit the ");
     			a = element("a");
     			a.textContent = "Svelte tutorial";
     			t4 = text(" to learn\n    how to build Svelte apps.");
-    			attr_dev(h1, "class", "svelte-8zj9s8");
+    			attr_dev(h1, "class", "text-4xl");
     			add_location(h1, file, 1, 2, 9);
     			attr_dev(a, "href", "https://svelte.dev/tutorial");
-    			add_location(a, file, 3, 14, 51);
-    			add_location(p, file, 2, 2, 33);
-    			attr_dev(main, "class", "svelte-8zj9s8");
+    			add_location(a, file, 3, 14, 68);
+    			add_location(p, file, 2, 2, 50);
     			add_location(main, file, 0, 0, 0);
     		},
     		l: function claim(nodes) {
@@ -424,4 +423,4 @@ var app = (function () {
     return app;
 
 })();
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=popup.js.map
