@@ -5,5 +5,12 @@
   "manifest_version": 3,
   "action": {
     "default_popup": "popup.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["build/content.css"],
+      "js": ["build/content.js"]
+    }
+  ]
 }

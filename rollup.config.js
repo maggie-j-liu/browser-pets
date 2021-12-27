@@ -33,7 +33,7 @@ function serve() {
   };
 }
 
-const getConfig = (name) => {
+const getConfig = (name, s) => {
   return {
     input: `src/${name}.js`,
     output: {
@@ -71,7 +71,7 @@ const getConfig = (name) => {
 
       // In dev mode, call `npm run start` once
       // the bundle has been generated
-      !production && serve(),
+      !production && s && serve(),
 
       // Watch the `public` directory and refresh the
       // browser on changes when not in production
@@ -87,4 +87,4 @@ const getConfig = (name) => {
   };
 };
 
-export default [getConfig("popup")];
+export default [getConfig("popup", false), getConfig("content", true)];
