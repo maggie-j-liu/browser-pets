@@ -80,6 +80,10 @@
       socket.connect();
       socket.emit("init", $art);
 
+      socket.on("allUsers", (data) => {
+        allArt.set(data);
+      });
+
       socket.on("remove", (id) => {
         let replaced = $allArt;
         delete replaced[id];
@@ -99,6 +103,7 @@
       allArt.set(replaced);
       socket.off("remove");
       socket.off("update");
+      socket.off("allUsers");
       socket.disconnect();
     }
   };
