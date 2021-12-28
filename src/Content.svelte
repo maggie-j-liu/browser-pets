@@ -130,7 +130,7 @@
 </script>
 
 {#if $activated}
-  <div class="fixed left-0 bottom-0 z-50">
+  <div class="fixed left-4 bottom-4 z-50">
     <div class="flex flex-wrap gap-4">
       {#each Object.entries($allUsers).sort((a, b) => {
         if (a[0] === socket.id) return -1;
@@ -148,7 +148,11 @@
               />
             {/each}
           </svg>
-          <div class="bg-white px-2 py-0.5 rounded-lg shadow-md">{uname}</div>
+          <div
+            class="border border-blue-300 bg-white px-2 py-0.5 rounded-lg shadow-md"
+          >
+            {uname}
+          </div>
         </div>
       {/each}
     </div>
