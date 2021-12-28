@@ -99,5 +99,14 @@ export default [
       file: `public/build/background.js`,
     },
   },
+  {
+    input: `src/animals.js`,
+    output: {
+      sourcemap: true,
+      format: "esm",
+      name: `animals`,
+      file: `public/build/animals.js`,
+    },
+  },
   getConfig("content", true),
 ];

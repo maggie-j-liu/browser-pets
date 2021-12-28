@@ -9,14 +9,18 @@
   let allArt = writable([]);
   let tabId = null;
   let hasArtChange = writable(false);
+  let username = writable("");
   (async () => {
     chrome.runtime.sendMessage({ event: "tabId" }, async (res) => {
       console.log(res);
       tabId = res.tabId;
-      let data = await chrome.storage.sync.get("art");
+      let data = await chrome.storage.sync.get(["art", "username"]);
       if (data?.art) {
         art.set(data.art);
         hasArtChange.set(true);
+      }
+      if (data?.username) {
+        username.set(data.username);
       }
       data = await chrome.storage.local.get("activeTab");
       console.log("activeTab", data);
@@ -31,6 +35,12 @@
         if (changes.art?.newValue) {
           art.set(changes.art.newValue);
           hasArtChange.set(true);
+        }
+        if (
+          changes.username?.newValue !== undefined &&
+          changes.username.newValue !== null
+        ) {
+          username.set(changes.username.newValue);
         }
       } else if (areaName === "local") {
         if (changes.activeTab?.newValue) {
@@ -116,7 +126,7 @@
       hasArtChange.set(false);
     }
   };
-  $: [$hasArtChange, $activated] && processArtChange();
+  // $: [$hasArtChange, $activated] && processArtChange();
 </script>
 
 {#if $activated}
@@ -126,16 +136,18 @@
         if (a[0] === socket.id) return -1;
         return a[0] < b[0] ? -1 : 1;
       }) as [id, art] (id)}
-        <div
-          class="aspect-square w-max mx-auto grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))]"
-        >
+        <svg viewBox="0 0 80 80">
           {#each art as c, i (i)}
-            <div
-              class="aspect-square w-[4px]"
-              style={`background-color:${c}`}
+            <rect
+              width="4"
+              height="4"
+              x={(i % 20) * 4}
+              y={Math.floor(i / 20) * 4}
+              style={`fill:${c}`}
             />
           {/each}
-        </div>
+        </svg>
+        <div>{$username}</div>
       {/each}
     </div>
   </div>

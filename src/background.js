@@ -1,3 +1,5 @@
+import animals from "./animals.js";
+
 async function getCurrentTab() {
   let queryOptions = { active: true, currentWindow: true };
   let [tab] = await chrome.tabs.query(queryOptions);
@@ -22,6 +24,12 @@ const activateTab = async (tabId) => {
 chrome.runtime.onInstalled.addListener(async () => {
   const tab = await getCurrentTab();
   await activateTab(tab.id);
+  const current = await chrome.storage.sync.get("username");
+  if (current?.username === undefined) {
+    chrome.storage.sync.set({
+      username: animals[Math.floor(Math.random() * animals.length)],
+    });
+  }
 });
 
 chrome.tabs.onActivated.addListener(async ({ tabId }) => {

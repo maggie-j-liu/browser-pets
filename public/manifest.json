@@ -16,6 +16,7 @@
   "options_page": "options.html",
   "permissions": ["tabs", "storage"],
   "background": {
-    "service_worker": "build/background.js"
+    "service_worker": "build/background.js",
+    "type": "module"
   }
 }
