@@ -90,5 +90,14 @@ const getConfig = (name, s) => {
 export default [
   getConfig("popup", false),
   getConfig("options", false),
+  {
+    input: `src/background.js`,
+    output: {
+      sourcemap: true,
+      format: "iife",
+      name: `background`,
+      file: `public/build/background.js`,
+    },
+  },
   getConfig("content", true),
 ];

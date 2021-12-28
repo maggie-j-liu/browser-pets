@@ -13,5 +13,9 @@
       "js": ["build/content.js"]
     }
   ],
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "permissions": ["tabs"],
+  "background": {
+    "service_worker": "build/background.js"
+  }
 }
