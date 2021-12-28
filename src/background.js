@@ -15,10 +15,13 @@ const activateTab = (tabId) => {
   }
   prevTab = tabId;
 };
-chrome.runtime.onInstalled.addListener(async () => {
-  const tab = await getCurrentTab();
-  activateTab(tab.id);
-});
+
 chrome.tabs.onActivated.addListener(({ tabId }) => {
   activateTab(tabId);
+});
+
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request.event === "isActive") {
+    sendResponse({ activated: sender.tab.active, tabId: sender.tab.id });
+  }
 });

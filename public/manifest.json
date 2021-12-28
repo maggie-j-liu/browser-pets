@@ -14,7 +14,7 @@
     }
   ],
   "options_page": "options.html",
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "build/background.js"
   }
