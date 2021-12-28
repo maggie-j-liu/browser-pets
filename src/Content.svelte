@@ -15,14 +15,14 @@
       tabId = res.tabId;
     });
     let data = await chrome.storage.sync.get("art");
-    if (data.art) {
+    if (data?.art) {
       art.set(data.art);
       hasArtChange.set(true);
     }
     data = await chrome.storage.local.get("activeTab");
     console.log("activeTab", data);
     console.log("tabId", tabId);
-    if (data.activeTab !== undefined) {
+    if (data?.activeTab !== undefined) {
       activated.set(data.activeTab === tabId);
     }
     chrome.storage.onChanged.addListener((changes, areaName) => {
