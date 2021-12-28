@@ -120,19 +120,25 @@
 </script>
 
 {#if $activated}
-  <main class="fixed left-0 bottom-0">
-    {#each Object.entries($allArt) as [id, art] (id)}
-      <div
-        class="aspect-square w-max mx-auto grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))]"
-      >
-        {#each art as c, i (i)}
-          <div class="aspect-square w-[4px]" style={`background-color:${c}`} />
-        {/each}
-      </div>
-    {/each}
-
-    Activated
-  </main>
+  <div class="fixed left-0 bottom-0">
+    <div class="flex flex-wrap gap-4">
+      {#each Object.entries($allArt).sort((a, b) => {
+        if (a[0] === socket.id) return -1;
+        return a[0] < b[0] ? -1 : 1;
+      }) as [id, art] (id)}
+        <div
+          class="aspect-square w-max mx-auto grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))]"
+        >
+          {#each art as c, i (i)}
+            <div
+              class="aspect-square w-[4px]"
+              style={`background-color:${c}`}
+            />
+          {/each}
+        </div>
+      {/each}
+    </div>
+  </div>
 {/if}
 
 <style global lang="postcss">
