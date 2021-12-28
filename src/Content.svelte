@@ -10,21 +10,22 @@
   let tabId = null;
   let hasArtChange = writable(false);
   (async () => {
-    chrome.runtime.sendMessage({ event: "tabId" }, (res) => {
+    chrome.runtime.sendMessage({ event: "tabId" }, async (res) => {
       console.log(res);
       tabId = res.tabId;
+      let data = await chrome.storage.sync.get("art");
+      if (data?.art) {
+        art.set(data.art);
+        hasArtChange.set(true);
+      }
+      data = await chrome.storage.local.get("activeTab");
+      console.log("activeTab", data);
+      console.log("tabId", tabId);
+      if (data?.activeTab !== undefined) {
+        activated.set(data.activeTab === tabId);
+      }
     });
-    let data = await chrome.storage.sync.get("art");
-    if (data?.art) {
-      art.set(data.art);
-      hasArtChange.set(true);
-    }
-    data = await chrome.storage.local.get("activeTab");
-    console.log("activeTab", data);
-    console.log("tabId", tabId);
-    if (data?.activeTab !== undefined) {
-      activated.set(data.activeTab === tabId);
-    }
+
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === "sync") {
         if (changes.art?.newValue) {
