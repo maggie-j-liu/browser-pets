@@ -88,7 +88,10 @@
     if ($activated && socket.disconnected) {
       console.log("run");
       socket.connect();
-      socket.emit("init", { art: $art, uname: $username });
+      socket.emit("init", {
+        art: $art,
+        uname: $username,
+      });
 
       socket.on("allUsers", (data) => {
         allUsers.set(data);
@@ -107,6 +110,22 @@
         allUsers.set(replaced);
         console.log($allUsers);
       });
+
+      socket.on("message", (id, msg) => {
+        console.log($allUsers, id, msg);
+        let replaced = $allUsers;
+        if (replaced[id].messages) {
+          replaced[id].messages.push(msg);
+        } else {
+          replaced[id].messages = [msg];
+        }
+        allUsers.set(replaced);
+        setTimeout(() => {
+          let replaced = $allUsers;
+          replaced[id].messages.shift();
+          allUsers.set(replaced);
+        }, 20000);
+      });
     } else {
       let replaced = $allUsers;
       delete replaced[socket.id];
@@ -114,6 +133,7 @@
       socket.off("remove");
       socket.off("update");
       socket.off("allUsers");
+      socket.off("message");
       socket.disconnect();
     }
   };
@@ -127,6 +147,12 @@
     }
   };
   // $: [$hasArtChange, $activated] && processArtChange();
+
+  let chatMsg = "";
+  const sendMsg = () => {
+    socket.emit("message", chatMsg);
+    chatMsg = "";
+  };
 </script>
 
 {#if $activated}
@@ -135,8 +161,17 @@
       {#each Object.entries($allUsers).sort((a, b) => {
         if (a[0] === socket.id) return -1;
         return a[0] < b[0] ? -1 : 1;
-      }) as [id, { art, uname }] (id)}
-        <div class="flex flex-col items-center gap-2">
+      }) as [id, { art, uname, messages }] (id)}
+        <div class="relative flex flex-col items-center gap-2">
+          {#if messages?.length}
+            <div class="absolute left-0 bottom-full mb-2">
+              {#each messages as message, i (i)}
+                <div class="w-max bg-white px-2 py-0.5 rounded-md shadow-md">
+                  {message}
+                </div>
+              {/each}
+            </div>
+          {/if}
           <svg viewBox="0 0 80 80" width="80" height="80">
             {#each art as c, i (i)}
               <rect
@@ -155,6 +190,17 @@
           </div>
         </div>
       {/each}
+    </div>
+    <div>
+      <label>
+        Chat:
+        <input bind:value={chatMsg} type="text" class="w-96" />
+        <button
+          class="bg-blue-200 hover:bg-blue-300 px-2 py-1 rounded-md"
+          type="button"
+          on:click|preventDefault={() => sendMsg()}>Send</button
+        >
+      </label>
     </div>
   </div>
 {/if}
