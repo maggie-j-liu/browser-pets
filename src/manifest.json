@@ -12,5 +12,6 @@
       "css": ["build/content.css"],
       "js": ["build/content.js"]
     }
-  ]
+  ],
+  "options_page": "options.html"
 }

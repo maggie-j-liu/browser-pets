@@ -87,4 +87,8 @@ const getConfig = (name, s) => {
   };
 };
 
-export default [getConfig("popup", false), getConfig("content", true)];
+export default [
+  getConfig("popup", false),
+  getConfig("options", false),
+  getConfig("content", true),
+];
