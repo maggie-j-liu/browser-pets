@@ -1,7 +1,7 @@
 <script context="module">
   import { writable } from "svelte/store";
   import { io } from "socket.io-client";
-  const socket = io("http://localhost:3000", {
+  const socket = io("https://browser-pets-server-production.up.railway.app/", {
     autoConnect: false,
   });
   let activated = writable(false);
