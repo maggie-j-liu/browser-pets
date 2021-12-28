@@ -88,7 +88,7 @@ const getConfig = (name, s) => {
 };
 
 export default [
-  getConfig("popup", false),
+  // getConfig("popup", false),
   getConfig("options", false),
   {
     input: `src/background.js`,
