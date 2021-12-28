@@ -130,24 +130,26 @@
 </script>
 
 {#if $activated}
-  <div class="fixed left-0 bottom-0">
+  <div class="fixed left-0 bottom-0 z-50">
     <div class="flex flex-wrap gap-4">
       {#each Object.entries($allUsers).sort((a, b) => {
         if (a[0] === socket.id) return -1;
         return a[0] < b[0] ? -1 : 1;
       }) as [id, { art, uname }] (id)}
-        <svg viewBox="0 0 80 80">
-          {#each art as c, i (i)}
-            <rect
-              width="4"
-              height="4"
-              x={(i % 20) * 4}
-              y={Math.floor(i / 20) * 4}
-              style={`fill:${c}`}
-            />
-          {/each}
-        </svg>
-        <div>{uname}</div>
+        <div class="flex flex-col items-center gap-2">
+          <svg viewBox="0 0 80 80" width="80" height="80">
+            {#each art as c, i (i)}
+              <rect
+                width="4"
+                height="4"
+                x={(i % 20) * 4}
+                y={Math.floor(i / 20) * 4}
+                style={`fill:${c}`}
+              />
+            {/each}
+          </svg>
+          <div class="bg-white px-2 py-0.5 rounded-lg shadow-md">{uname}</div>
+        </div>
       {/each}
     </div>
   </div>
