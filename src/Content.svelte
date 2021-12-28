@@ -6,7 +6,7 @@
   });
   let activated = writable(false);
   let art = writable(Array(400).fill("transparent"));
-  let allArt = writable([]);
+  let allUsers = writable([]);
   let tabId = null;
   let hasArtChange = writable(false);
   let username = writable("");
@@ -88,29 +88,29 @@
     if ($activated && socket.disconnected) {
       console.log("run");
       socket.connect();
-      socket.emit("init", $art);
+      socket.emit("init", { art: $art, uname: $username });
 
       socket.on("allUsers", (data) => {
-        allArt.set(data);
+        allUsers.set(data);
       });
 
       socket.on("remove", (id) => {
-        let replaced = $allArt;
+        let replaced = $allUsers;
         delete replaced[id];
-        allArt.set(replaced);
+        allUsers.set(replaced);
       });
 
-      socket.on("update", (id, newArt) => {
-        let replaced = $allArt;
-        replaced[id] = newArt;
+      socket.on("update", (id, newUser) => {
+        let replaced = $allUsers;
+        replaced[id] = newUser;
         // console.log(newArt);
-        allArt.set(replaced);
-        console.log($allArt);
+        allUsers.set(replaced);
+        console.log($allUsers);
       });
     } else {
-      let replaced = $allArt;
+      let replaced = $allUsers;
       delete replaced[socket.id];
-      allArt.set(replaced);
+      allUsers.set(replaced);
       socket.off("remove");
       socket.off("update");
       socket.off("allUsers");
@@ -132,10 +132,10 @@
 {#if $activated}
   <div class="fixed left-0 bottom-0">
     <div class="flex flex-wrap gap-4">
-      {#each Object.entries($allArt).sort((a, b) => {
+      {#each Object.entries($allUsers).sort((a, b) => {
         if (a[0] === socket.id) return -1;
         return a[0] < b[0] ? -1 : 1;
-      }) as [id, art] (id)}
+      }) as [id, { art, uname }] (id)}
         <svg viewBox="0 0 80 80">
           {#each art as c, i (i)}
             <rect
@@ -147,7 +147,7 @@
             />
           {/each}
         </svg>
-        <div>{$username}</div>
+        <div>{uname}</div>
       {/each}
     </div>
   </div>
